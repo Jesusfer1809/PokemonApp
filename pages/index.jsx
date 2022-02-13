@@ -1,84 +1,139 @@
 import Head from 'next/head'
 
 import { composeWithDevTools } from '@redux-devtools/extension'
+import { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
+
+import { gql } from '@apollo/client'
+import client from '../apollo-client'
+
+const letters = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+]
+
+const MAX_NUMBER_POKES = 898
 
 export default function Home() {
+  const [limit, setLimit] = useState(20)
+  const [offset, setOffset] = useState(0)
+  const [loading, setIsLoading] = useState(false)
+  const [pokemons, setPokemons] = useState([])
+  console.log(pokemons)
+  console.log(offset)
+  console.log(limit)
+
+  const { ref, inView } = useInView()
+
+  const renderLetters = () => {
+    return letters
+      .slice(0, limit - 1)
+      .map((l) => <div className=" text-[500px] text-black">{l}</div>)
+  }
+
+  const fetchPokemons = () => {
+    try {
+      setIsLoading(true)
+
+      const fetchData = async () => {
+        const { data: response } = await client.query({
+          query: gql`
+            query MyQuery {
+              pokemon_v2_pokemon(
+                where: { id: { _lte: ${
+                  limit < MAX_NUMBER_POKES ? limit : MAX_NUMBER_POKES
+                }, _gt: ${offset} } },
+                
+              ) {
+                name
+                id
+                pokemon_v2_pokemonstats {
+                  pokemon_v2_stat {
+                    name
+                  }
+                  base_stat
+                }
+                pokemon_v2_pokemontypes {
+                  pokemon_v2_type {
+                    name
+                  }
+                }
+              }
+            }
+          `,
+        })
+
+        setPokemons((prevPokemons) => {
+          return [...new Set([...prevPokemons, ...response.pokemon_v2_pokemon])]
+        })
+      }
+      fetchData()
+    } catch (err) {
+    } finally {
+      setLimit((prev) => prev + 20)
+      setOffset((prev) => prev + 20)
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchPokemons()
+  }, [])
+
+  useEffect(() => {
+    if (inView && pokemons.length < MAX_NUMBER_POKES) {
+      fetchPokemons()
+    }
+  }, [inView])
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+      <div className="flex flex-col">
+        {pokemons.map((pokemon, index) => {
+          if (pokemons.length === index + 1) {
+            return (
+              <div ref={ref} className=" text-[100px] text-red-500">
+                {pokemon.name}
+              </div>
+            )
+          }
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
+          return <div className=" text-[100px] text-black">{pokemon.name}</div>
+        })}
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="ml-2 h-4" />
-        </a>
-      </footer>
+        {loading && (
+          <div className=" text-[100px] text-blue-700">Loading...</div>
+        )}
+      </div>
     </div>
   )
 }
