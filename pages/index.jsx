@@ -1,4 +1,8 @@
 import Head from 'next/head'
+import PokeCard from '../components/PokeCard'
+import NavBar from '../components/NavBar'
+
+import { colors } from '../utils/variables'
 
 import { composeWithDevTools } from '@redux-devtools/extension'
 import { useEffect, useState } from 'react'
@@ -6,35 +10,7 @@ import { useInView } from 'react-intersection-observer'
 
 import { gql } from '@apollo/client'
 import client from '../apollo-client'
-
-const letters = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z',
-]
+import Image from 'next/image'
 
 const MAX_NUMBER_POKES = 898
 
@@ -43,40 +19,27 @@ export default function Home() {
   const [offset, setOffset] = useState(0)
   const [loading, setIsLoading] = useState(false)
   const [pokemons, setPokemons] = useState([])
-  console.log(pokemons)
-  console.log(offset)
-  console.log(limit)
 
   const { ref, inView } = useInView()
 
-  const renderLetters = () => {
-    return letters
-      .slice(0, limit - 1)
-      .map((l) => <div className=" text-[500px] text-black">{l}</div>)
-  }
-
-  const fetchPokemons = () => {
+  const fetchPokemons = async (query) => {
     try {
-      setIsLoading(true)
+      await setIsLoading(true)
+      await setPokemons([])
 
-      const fetchData = async () => {
+      const fetchData = async (query) => {
         const { data: response } = await client.query({
           query: gql`
             query MyQuery {
               pokemon_v2_pokemon(
-                where: { id: { _lte: ${
-                  limit < MAX_NUMBER_POKES ? limit : MAX_NUMBER_POKES
-                }, _gt: ${offset} } },
+                where: {name: {_regex: ${
+                  query || '""'
+                }}, id: { _lte: ${MAX_NUMBER_POKES} }}
                 
               ) {
                 name
                 id
-                pokemon_v2_pokemonstats {
-                  pokemon_v2_stat {
-                    name
-                  }
-                  base_stat
-                }
+                
                 pokemon_v2_pokemontypes {
                   pokemon_v2_type {
                     name
@@ -91,7 +54,7 @@ export default function Home() {
           return [...new Set([...prevPokemons, ...response.pokemon_v2_pokemon])]
         })
       }
-      fetchData()
+      await fetchData(query)
     } catch (err) {
     } finally {
       setLimit((prev) => prev + 20)
@@ -106,34 +69,49 @@ export default function Home() {
 
   useEffect(() => {
     if (inView && pokemons.length < MAX_NUMBER_POKES) {
-      fetchPokemons()
     }
   }, [inView])
 
   return (
-    <div className="">
+    <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex flex-col">
-        {pokemons.map((pokemon, index) => {
-          if (pokemons.length === index + 1) {
+      <div className="flex flex-col items-center  bg-project_main pb-32 text-white">
+        <NavBar fetchPokemons={fetchPokemons} />
+
+        <div
+          className={`relative my-20 h-72 w-72 rounded-xl border-4  border-[${colors.dark}]`}
+        >
+          <Image
+            ng-src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png`}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png`}
+            layout="fill"
+          />
+        </div>
+
+        <div className="grid w-full grid-cols-2 gap-x-4 gap-y-24 sm:grid-cols-3 lg:w-4/5 lg:grid-cols-4">
+          {pokemons.map((pokemon, index) => {
+            if (pokemons.length === index + 1) {
+              return (
+                <div key={pokemon.id} ref={ref}>
+                  <PokeCard pokemon={pokemon} />
+                </div>
+              )
+            }
+
             return (
-              <div ref={ref} className=" text-[100px] text-red-500">
-                {pokemon.name}
+              <div key={pokemon.id}>
+                <PokeCard pokemon={pokemon} />
               </div>
             )
-          }
+          })}
+        </div>
 
-          return <div className=" text-[100px] text-black">{pokemon.name}</div>
-        })}
-
-        {loading && (
-          <div className=" text-[100px] text-blue-700">Loading...</div>
-        )}
+        {loading && <div className=" mt-16 text-7xl">Loading...</div>}
       </div>
-    </div>
+    </>
   )
 }
