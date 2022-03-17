@@ -120,7 +120,7 @@ function MobileMenu() {
         </li>
 
         <li className=" m-4 mb-0 border-b border-blue-400 pb-4">
-          <button className="rounded-lg bg-blue-400 px-6 py-2 font-medium text-white">
+          <button className="rounded-lg bg-gradient-to-r from-[#119DFA] to-[#11CBFA] px-6 py-2 font-medium text-white">
             Create
           </button>
         </li>

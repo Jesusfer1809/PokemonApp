@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import PokeCard from '../components/PokeCard'
 import NavBar from '../components/NavBar'
+import Hero from '../components/Hero'
 
 import { colors } from '../utils/variables'
 
@@ -79,17 +80,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex flex-col items-center  bg-project_main pb-32 text-white">
+      <div className="flex flex-col items-center  bg-project_main pb-32 font-rubik text-white">
         <NavBar fetchPokemons={fetchPokemons} />
 
-        <div
-          className={`relative my-20 h-72 w-72 rounded-xl border-4  border-[${colors.dark}]`}
-        >
-          <Image
-            ng-src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png`}
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png`}
-            layout="fill"
-          />
+        <Hero />
+
+        <div className="relative my-20 rounded-xl">
+          <div className="absolute inset-0 h-72 w-72 rounded-xl bg-[#a945c7] blur-lg "></div>
+          <div
+            className={`relative h-72 w-72 rounded-xl border-4 bg-project_main  border-[${colors.dark}]  `}
+          >
+            <Image
+              ng-src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png`}
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png`}
+              layout="fill"
+            />
+          </div>
         </div>
 
         <div className="grid w-full grid-cols-2 gap-x-4 gap-y-24 sm:grid-cols-3 lg:w-4/5 lg:grid-cols-4">

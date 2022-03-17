@@ -15,7 +15,7 @@ function DesktopMenu() {
         <input
           type="text"
           placeholder="Search collectibles and collections"
-          className="flex grow rounded-full py-2 px-12 text-project_main "
+          className="flex w-full rounded-full py-2 px-12 text-project_main "
         />
       </div>
 
@@ -52,8 +52,12 @@ function DesktopMenu() {
           </ul>
         </li>
 
+        <li className="flex items-center p-4">
+          <a href="#">My NFTs</a>
+        </li>
+
         <li className="flex items-center">
-          <button className="rounded-lg bg-blue-400 px-6 py-2 font-medium text-white">
+          <button className="rounded-lg bg-gradient-to-r from-[#119DFA] to-[#11CBFA] px-6 py-2 font-medium text-white">
             Create
           </button>
         </li>
