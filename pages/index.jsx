@@ -1,27 +1,30 @@
-import Head from 'next/head'
-import PokeCard from '../components/PokeCard'
-import NavBar from '../components/NavBar'
-import Hero from '../components/Hero'
+import Head from "next/head"
+import PokeCard from "../components/PokeCard"
+import NavBar from "../components/NavBar"
+import Hero from "../components/Hero"
 
-import { colors } from '../utils/variables'
+import { colors } from "../utils/variables"
 
-import { composeWithDevTools } from '@redux-devtools/extension'
-import { useEffect, useState } from 'react'
-import { useInView } from 'react-intersection-observer'
+import { useEffect, useState } from "react"
+import { useInView } from "react-intersection-observer"
+import { useSelector, useDispatch } from "react-redux"
+import { getSlides } from "../store/actions/slideAction"
 
-import { gql } from '@apollo/client'
-import client from '../apollo-client'
-import Image from 'next/image'
+import { gql } from "@apollo/client"
+import client from "../apollo-client"
+import Image from "next/image"
+import axios from "axios"
 
 const MAX_NUMBER_POKES = 898
 
-export default function Home() {
+export default function Home({ slides }) {
   const [limit, setLimit] = useState(20)
   const [offset, setOffset] = useState(0)
   const [loading, setIsLoading] = useState(false)
   const [pokemons, setPokemons] = useState([])
 
   const { ref, inView } = useInView()
+  const dispatch = useDispatch()
 
   const fetchPokemons = async (query) => {
     try {
@@ -63,6 +66,10 @@ export default function Home() {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    dispatch(getSlides(slides))
+  }, [])
 
   useEffect(() => {
     fetchPokemons()
@@ -120,4 +127,15 @@ export default function Home() {
       </div>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const result = await axios.get("http://localhost:3000/api/slides")
+  const slides = result.data
+
+  return {
+    props: {
+      slides,
+    },
+  }
 }
