@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import MobileMenu from './MobileMenu'
-import DesktopMenu from './DesktopMenu'
+import React, { useState } from "react"
+import MobileMenu from "./MobileMenu"
+import DesktopMenu from "./DesktopMenu"
 
 function NavBar() {
   // const [query, setQuery] = useState('')
@@ -12,7 +12,7 @@ function NavBar() {
   // }
 
   return (
-    <div className="fixed z-50 w-full bg-project_main">
+    <div className="fixed z-50 w-full bg-project_main text-white">
       <MobileMenu />
       <DesktopMenu />
     </div>
