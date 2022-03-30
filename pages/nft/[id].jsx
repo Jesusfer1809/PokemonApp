@@ -1,8 +1,8 @@
 import React from "react"
 
 import NavBar from "../../components/NavBar"
-import DetailsMobile from "../../components/DetailsMobile"
-import DetailsDesktop from "../../components/DetailsDesktop"
+import Details from "../../components/Details"
+
 import Footer from "../../components/Footer"
 
 import { useRouter } from "next/router"
@@ -21,7 +21,7 @@ function DetailPage({ pokeData }) {
       <div className="bg-white font-rubik ">
         <NavBar />
 
-        <DetailsMobile pokeData={pokeData} />
+        <Details pokeData={pokeData} />
 
         <Footer />
       </div>

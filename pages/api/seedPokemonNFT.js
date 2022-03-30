@@ -43,6 +43,15 @@ handler.get(async (req, res) => {
       types: object.pokemon_v2_pokemontypes.map((type) => {
         return type.pokemon_v2_type.name
       }),
+      owner:
+        Math.random() < 0.5
+          ? "62447191356c3fb7514b465f"
+          : "62446f9d356c3fb7514b4658",
+
+      creator:
+        Math.random() < 0.5
+          ? "62447191356c3fb7514b465f"
+          : "62446f9d356c3fb7514b4658",
     }
   })
 

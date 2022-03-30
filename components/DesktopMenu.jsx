@@ -1,7 +1,10 @@
-import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid'
-import React, { useState } from 'react'
+import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid"
+import React, { useState } from "react"
+import Link from "next/link"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 function DesktopMenu() {
+  const { data: session } = useSession()
   const [brandsOpen, setBrandsOpen] = useState(false)
 
   const toggleBrands = () => {
@@ -9,7 +12,11 @@ function DesktopMenu() {
   }
   return (
     <div className="hidden w-full items-center justify-between space-x-4 p-4 lg:flex">
-      <div className="relative min-w-fit font-medium">TRADECAVE | NFT</div>
+      <Link href="/">
+        <div className="relative min-w-fit cursor-pointer font-medium">
+          TRADECAVE | NFT
+        </div>
+      </Link>
       <div className="relative flex grow items-center">
         <SearchIcon className="absolute top-2 left-3  z-50 h-6 w-6 text-project_main" />
         <input
@@ -30,14 +37,14 @@ function DesktopMenu() {
 
         <li className="relative flex items-center p-4">
           <a href="#" className="flex items-center" onClick={toggleBrands}>
-            Brands <ChevronDownIcon className="h-6 w-6" />{' '}
+            Brands <ChevronDownIcon className="h-6 w-6" />{" "}
           </a>
 
           <ul
             className={`${
               brandsOpen
-                ? 'absolute top-0 left-0 mt-16 flex w-72 flex-col rounded-lg bg-white text-project_main'
-                : 'hidden'
+                ? "absolute top-0 left-0 mt-16 flex w-72 flex-col rounded-lg bg-white text-project_main"
+                : "hidden"
             } `}
           >
             <li className="p-4">
@@ -62,13 +69,25 @@ function DesktopMenu() {
           </button>
         </li>
 
-        <li className="flex items-center p-4">
-          <a href="#">Sign In</a>
-        </li>
-        <li className="flex items-center p-4">
-          {' '}
-          <a href="#">Sign Up</a>{' '}
-        </li>
+        {!session ? (
+          <>
+            <li className="flex items-center p-4">
+              <a href="#" onClick={() => signIn()}>
+                Sign In
+              </a>
+            </li>
+            <li className="flex items-center p-4">
+              {" "}
+              <a href="#">Sign Up</a>{" "}
+            </li>
+          </>
+        ) : (
+          <li className="flex items-center p-4">
+            <a href="#" onClick={() => signOut()}>
+              {session.user.name}
+            </a>
+          </li>
+        )}
       </ul>
     </div>
   )

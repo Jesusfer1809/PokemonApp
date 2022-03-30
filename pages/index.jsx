@@ -1,4 +1,6 @@
 import Head from "next/head"
+import { useSession, signIn, signOut } from "next-auth/react"
+
 import PokeCard from "../components/PokeCard"
 import NavBar from "../components/NavBar"
 import Hero from "../components/Hero"
@@ -16,7 +18,7 @@ import axios from "axios"
 
 const MAX_NUMBER_POKES = 898
 
-export default function Home({ slides, pokemon1Gen }) {
+export default function Home({ slides }) {
   const [loading, setIsLoading] = useState(false)
   const [pokemons, setPokemons] = useState([])
 
@@ -24,7 +26,13 @@ export default function Home({ slides, pokemon1Gen }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    setPokemons(pokemon1Gen)
+    const fetchPokemons = async () => {
+      const result2 = await axios.get("http://localhost:3000/api/pokemon")
+      const pokemon1Gen = result2.data
+      setPokemons(pokemon1Gen)
+    }
+
+    fetchPokemons()
   }, [])
 
   useEffect(() => {
@@ -48,7 +56,7 @@ export default function Home({ slides, pokemon1Gen }) {
             <h2 className="text-5xl">Top Collectibles</h2>
           </div>
           <div className=" grid w-full grid-cols-1 gap-x-6 gap-y-24 px-8 sz500:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:px-16 ">
-            {pokemons.map((pokemon, index) => {
+            {pokemons?.map((pokemon, index) => {
               return (
                 <div key={pokemon._id}>
                   <PokeCard pokemon={pokemon} />
@@ -68,13 +76,9 @@ export async function getServerSideProps() {
   const result1 = await axios.get("http://localhost:3000/api/slides")
   const slides = result1.data
 
-  const result2 = await axios.get("http://localhost:3000/api/pokemon")
-  const pokemon1Gen = result2.data
-
   return {
     props: {
       slides,
-      pokemon1Gen,
     },
   }
 }

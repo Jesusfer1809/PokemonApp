@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState } from "react"
 import {
   SearchIcon,
   MenuIcon,
   UserIcon,
   ChevronDownIcon,
   XIcon,
-} from '@heroicons/react/solid'
-import Image from 'next/image'
+} from "@heroicons/react/solid"
+import Image from "next/image"
+import Link from "next/link"
 
 function MobileMenu() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -36,7 +37,9 @@ function MobileMenu() {
             <MenuIcon className="h-8 w-8 cursor-pointer" onClick={toggleMenu} />
           )}
 
-          <div className="font-medium">TRADECAVE | NFT</div>
+          <Link href="/">
+            <div className="font-medium">TRADECAVE | NFT</div>
+          </Link>
         </div>
 
         <div className="flex space-x-4">
@@ -52,7 +55,7 @@ function MobileMenu() {
 
             <div
               className={`absolute top-0 right-0 mt-[4rem] w-64 rounded-lg bg-white p-4 font-medium text-black ${
-                userOpen ? 'block' : 'hidden'
+                userOpen ? "block" : "hidden"
               } `}
             >
               <div className="flex items-center space-x-4">
@@ -90,7 +93,7 @@ function MobileMenu() {
 
       <ul
         className={`absolute top-0 left-0 z-50 mt-[4rem]  w-full   bg-project_main text-lg font-medium text-white ${
-          menuOpen ? 'flex flex-col' : 'hidden'
+          menuOpen ? "flex flex-col" : "hidden"
         } `}
       >
         <li className="p-4">
@@ -103,10 +106,10 @@ function MobileMenu() {
 
         <li className="p-4">
           <a href="#" className="flex items-center" onClick={toggleBrands}>
-            Brands <ChevronDownIcon className="h-6 w-6" />{' '}
+            Brands <ChevronDownIcon className="h-6 w-6" />{" "}
           </a>
 
-          <ul className={`${brandsOpen ? 'flex flex-col' : 'hidden'} `}>
+          <ul className={`${brandsOpen ? "flex flex-col" : "hidden"} `}>
             <li className="p-4">
               <a href="#">Pokemon</a>
             </li>

@@ -1,6 +1,7 @@
 /* This is a database connection function*/
 import mongoose from "mongoose"
 
+console.log(mongoose.models)
 const connection = {} /* creating connection object*/
 
 async function connect() {
@@ -24,6 +25,7 @@ async function connect() {
   })
   console.log("new connection")
   connection.isConnected = db.connections[0].readyState
+  return db
 }
 
 const disconnect = async () => {
