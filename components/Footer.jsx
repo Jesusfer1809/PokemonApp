@@ -1,5 +1,3 @@
-import React from "react"
-
 function Footer() {
   return (
     <div className="flex w-full flex-col space-y-4 bg-project_main p-6 text-sm text-white md:flex-row md:items-center md:justify-between md:space-y-0">

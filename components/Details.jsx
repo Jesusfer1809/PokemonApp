@@ -2,8 +2,9 @@ import Image from "next/image"
 import React from "react"
 import { colors } from "../utils/variables"
 
-function DetailsMobile({ pokeData }) {
-  const { pokemonID, name, franchise, types } = pokeData[0]
+function Details({ pokeData }) {
+  const { name, brand, owner, creator, price } = pokeData
+  const { pokemonID, types } = pokeData.NFTProps
 
   const color = colors[`${types[0]}`]
   const colorLight = colors[`${types[0]}_light`]
@@ -14,7 +15,7 @@ function DetailsMobile({ pokeData }) {
       <div className="mb-12 flex items-center justify-between md:hidden">
         <div className="flex flex-col sm:flex-row sm:items-center  sm:space-x-2">
           <span className="text-xl text-gray-600">
-            {franchise} #{pokemonID.toString().padStart(3, "0")}:
+            {brand} #{pokemonID.toString().padStart(3, "0")}:
           </span>
           <span className="text-4xl">{name}</span>
         </div>
@@ -48,7 +49,7 @@ function DetailsMobile({ pokeData }) {
         <div className="hidden items-center justify-between md:flex ">
           <div className="flex flex-col space-y-1">
             <span className="text-xl text-gray-600">
-              {franchise} #{pokemonID.toString().padStart(3, "0")}:
+              {brand} #{pokemonID.toString().padStart(3, "0")}:
             </span>
             <span className="text-4xl">{name}</span>
           </div>
@@ -59,14 +60,14 @@ function DetailsMobile({ pokeData }) {
           <div className="flex flex-col">
             <span className="text-xs text-gray-600 md:text-sm">Creator</span>
             <span className="text-sm font-medium md:text-base">
-              Jesusfer1809
+              {creator.username}
             </span>
           </div>
 
           <div className="flex flex-col">
             <span className="text-xs text-gray-600 md:text-sm">Owner</span>
             <span className="text-sm font-medium md:text-base">
-              Jesusfer1809
+              {owner.username}
             </span>
           </div>
         </div>
@@ -89,9 +90,9 @@ function DetailsMobile({ pokeData }) {
             <span className="text-xs text-gray-600 sm:text-sm">
               Current bid
             </span>
-            <span className="font-medium sm:text-lg">571.7 BUSD</span>
+            <span className="font-medium sm:text-lg">{price} BUSD</span>
             <span className="text-sm text-gray-600 sm:text-base">
-              ≈ €107.66
+              ≈ €{(price * 0.922972).toFixed(2)}
             </span>
           </div>
 
@@ -249,4 +250,4 @@ function DetailsMobile({ pokeData }) {
   )
 }
 
-export default DetailsMobile
+export default Details

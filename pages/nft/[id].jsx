@@ -11,10 +11,11 @@ import Head from "next/head"
 import Image from "next/image"
 
 function DetailPage({ pokeData }) {
+  console.log(pokeData)
   return (
     <>
       <Head>
-        <title>NFT | {pokeData[0].name}</title>
+        <title>NFT | {pokeData.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -34,8 +35,8 @@ export default DetailPage
 export async function getServerSideProps(ctx) {
   const { id } = ctx.params
 
-  const result1 = await axios.get(`http://localhost:3000/api/pokemon/${id}`)
-  const pokeData = result1.data
+  const result1 = await axios.get(`http://localhost:3000/api/nft/${id}`)
+  const pokeData = result1.data.data.nft
 
   return {
     props: {

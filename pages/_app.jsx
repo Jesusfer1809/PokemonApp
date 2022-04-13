@@ -1,7 +1,7 @@
-import "../styles/globals.css"
+import "styles/globals.css"
 import { Provider } from "react-redux"
 import { createWrapper } from "next-redux-wrapper"
-import store from "../store/store"
+import store from "store/store"
 import { SessionProvider } from "next-auth/react"
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {

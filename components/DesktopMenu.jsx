@@ -76,10 +76,6 @@ function DesktopMenu() {
                 Sign In
               </a>
             </li>
-            <li className="flex items-center p-4">
-              {" "}
-              <a href="#">Sign Up</a>{" "}
-            </li>
           </>
         ) : (
           <li className="flex items-center p-4">

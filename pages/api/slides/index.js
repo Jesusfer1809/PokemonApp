@@ -1,5 +1,5 @@
-import db from "../../../utils/db"
-import Slide from "../../../models/Slider"
+import db from "utils/db"
+import Slide from "models/SlideModel"
 
 export default async function handler(req, res) {
   await db.connect()

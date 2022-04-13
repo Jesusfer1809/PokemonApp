@@ -1,9 +1,6 @@
-import Image from "next/image"
-import React, { useState } from "react"
+import { useState } from "react"
 
-import { useSelector, useDispatch } from "react-redux"
-
-import axios from "axios"
+import { useSelector } from "react-redux"
 
 export default function HeroSlider() {
   const [index, setIndex] = useState(0)

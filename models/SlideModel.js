@@ -9,11 +9,13 @@ const slideSchema = new mongoose.Schema(
     imgURL: { type: String, required: true },
   },
   {
-    timestamps: true,
+    timestamps: false,
     versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 )
 
-const model = mongoose.models.Slide || mongoose.model("Slide", slideSchema)
+const Slide = mongoose.models.Slide || mongoose.model("Slide", slideSchema)
 
-export default model
+export default Slide

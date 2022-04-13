@@ -4,10 +4,12 @@ import EmailProvider from "next-auth/providers/email"
 import GoogleProvider from "next-auth/providers/google"
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
-import clientPromise from "../../../lib/mongodb"
+import clientPromise from "lib/mongodb"
 
-import UserInf from "../../../models/UserInf"
-import db from "../../../utils/db"
+import UserInfo from "models/UserInfoModel"
+import db from "utils/db"
+
+import axios from "axios"
 
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
@@ -24,38 +26,20 @@ export default NextAuth({
     // ...add more providers here
   ],
   secret: process.env.JWT_SECRET,
-  callbacks: {
-    async signIn(user, account, profile) {
-      await db.connect()
+  events: {
+    signIn: async (message) => {
+      console.log("sign in!!")
+    },
+    createUser: async (user) => {
+      console.log("USER CREATED!!")
+      console.log(user)
 
-      const prevUser = await UserInf.findOne({ _id: user.user.id })
-
-      if (!prevUser) {
-        await UserInf.create({
-          _id: user.user.id,
-          name: user.user.name,
-          email: user.user.email,
-          image: user.user.image,
-        })
-      }
-
-      if (prevUser && prevUser.image !== user.user.image) {
-        await UserInf.findByIdAndUpdate(
-          prevUser._id,
-          {
-            ...prevUser,
-            image: user.user.image,
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        )
-      }
-
-      await db.disconnect()
-
-      return true
+      await axios.post("http://localhost:3000/api/newUser", {
+        _id: user.user.id,
+        fullName: user.user.name,
+        email: user.user.email,
+        image: user.user.image,
+      })
     },
   },
 })
