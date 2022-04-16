@@ -1,15 +1,23 @@
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid"
 import React, { useState } from "react"
 import Link from "next/link"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 
-function DesktopMenu() {
+import UserDropdownMenu from "./UserDropdownMenu"
+
+function DesktopMenu({ user }) {
   const { data: session } = useSession()
   const [brandsOpen, setBrandsOpen] = useState(false)
+  const [userOpen, setUserOpen] = useState(false)
 
   const toggleBrands = () => {
     setBrandsOpen(!brandsOpen)
   }
+
+  const toggleUserOpen = () => {
+    userOpen ? setUserOpen(false) : setUserOpen(true)
+  }
+
   return (
     <div className="hidden w-full items-center justify-between space-x-4 p-4 lg:flex">
       <Link href="/">
@@ -70,18 +78,18 @@ function DesktopMenu() {
         </li>
 
         {!session ? (
-          <>
-            <li className="flex items-center p-4">
-              <a href="#" onClick={() => signIn()}>
-                Sign In
-              </a>
-            </li>
-          </>
+          <li className="ml-4 flex items-center border-l border-[#11CBFA] p-4">
+            <span href="#" className="cursor-pointer" onClick={signIn}>
+              Sign In
+            </span>
+          </li>
         ) : (
-          <li className="flex items-center p-4">
-            <a href="#" onClick={() => signOut()}>
+          <li className="relative ml-4 flex items-center border-l border-[#11CBFA] p-4">
+            <span href="#" onClick={toggleUserOpen} className="cursor-pointer">
               {session.user.name}
-            </a>
+            </span>
+
+            <UserDropdownMenu userOpen={userOpen} user={user} />
           </li>
         )}
       </ul>

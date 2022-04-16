@@ -8,8 +8,13 @@ import {
 } from "@heroicons/react/solid"
 import Image from "next/image"
 import Link from "next/link"
+import UserDropdownMenu from "./UserDropdownMenu"
 
-function MobileMenu() {
+import { useSession, signIn } from "next-auth/react"
+
+function MobileMenu({ user }) {
+  const { data: session } = useSession()
+
   const [menuOpen, setMenuOpen] = useState(false)
   const [userOpen, setUserOpen] = useState(false)
   const [brandsOpen, setBrandsOpen] = useState(false)
@@ -45,48 +50,23 @@ function MobileMenu() {
         <div className="flex space-x-4">
           <SearchIcon className="h-8 w-8" />
           <div className="relative flex items-center">
-            <div
-              className="relative flex cursor-pointer items-center"
-              onClick={toggleUser}
-            >
-              <UserIcon className="h-8 w-8" />
-              <ChevronDownIcon className="h-6 w-6" />
-            </div>
-
-            <div
-              className={`absolute top-0 right-0 mt-[4rem] w-64 rounded-lg bg-white p-4 font-medium text-black ${
-                userOpen ? "block" : "hidden"
-              } `}
-            >
-              <div className="flex items-center space-x-4">
-                <div className="relative h-12 w-12 rounded-full border border-project_main">
-                  <Image
-                    ng-src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png`}
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png`}
-                    layout="fill"
-                  />
-                </div>
-
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-600">Jesusfer1809</span>
-                  <span className="text-lg">My Profile</span>
-                </div>
+            {!session ? (
+              <div className="relative flex  items-center">
+                <span href="#" className="cursor-pointer" onClick={signIn}>
+                  Sign In
+                </span>
               </div>
+            ) : (
+              <div
+                className="relative flex cursor-pointer items-center"
+                onClick={toggleUser}
+              >
+                <UserIcon className="h-8 w-8" />
+                <ChevronDownIcon className="h-6 w-6" />
+              </div>
+            )}
 
-              <ul className="mt-4 ">
-                <li className="p-2">
-                  <a href="#">Edit Profile</a>
-                </li>
-
-                <li className="p-2">
-                  <a href="#">Account Activity</a>
-                </li>
-
-                <li className="p-2">
-                  <a href="#">Log Out</a>
-                </li>
-              </ul>
-            </div>
+            <UserDropdownMenu userOpen={userOpen} user={user} />
           </div>
         </div>
       </div>
@@ -127,11 +107,6 @@ function MobileMenu() {
             Create
           </button>
         </li>
-
-        <li className="p-4">
-          <a href="#">Sign In</a>
-        </li>
-        <li className="p-4">Sign Up</li>
       </ul>
     </div>
   )

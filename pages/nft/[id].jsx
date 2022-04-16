@@ -11,7 +11,6 @@ import Head from "next/head"
 import Image from "next/image"
 
 function DetailPage({ pokeData }) {
-  console.log(pokeData)
   return (
     <>
       <Head>

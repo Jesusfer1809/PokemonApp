@@ -26,6 +26,9 @@ export default NextAuth({
     // ...add more providers here
   ],
   secret: process.env.JWT_SECRET,
+  pages: {
+    signIn: "/auth/signIn",
+  },
   events: {
     signIn: async (message) => {
       console.log("sign in!!")

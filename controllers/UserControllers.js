@@ -22,3 +22,23 @@ export const createNewUser = async (req, res) => {
     })
   }
 }
+
+export const getMe = async (req, res, session) => {
+  try {
+    const { email } = session.user
+    const me = await UserInfo.find({ email })
+
+    return res.status(200).json({
+      status: "success",
+
+      data: {
+        me,
+      },
+    })
+  } catch (error) {
+    return res.status(400).json({
+      status: "fail",
+      message: error.message,
+    })
+  }
+}
