@@ -11,9 +11,7 @@ function NavBar() {
   useEffect(async () => {
     try {
       const fetchNFT = async () => {
-        const result = await axios.get(
-          `${process.env.NEXTAUTH_URL}/api/user/me`
-        )
+        const result = await axios.get(`http://localhost:3000/api/user/me`)
         return result.data.data.me[0]
       }
 

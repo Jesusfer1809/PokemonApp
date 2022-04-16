@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react"
 import Card from "./Card"
 import mongoose from "mongoose"
 
+import db from "utils/db"
+
 function NFTShowcase() {
   const [nft, setNFT] = useState([])
 
@@ -10,9 +12,10 @@ function NFTShowcase() {
     try {
       const fetchNFT = async () => {
         try {
-          const result = await axios.get(`${process.env.NEXTAUTH_URL}/api/nft`)
-          console.log(result)
-          const pokemon1Gen = result.data.data.nft
+          const res = await fetch(`http://localhost:3000/api/nft`)
+          const data = await res.json()
+          console.log(data)
+          const pokemon1Gen = data.data.nft
 
           setNFT(pokemon1Gen)
         } catch (e) {

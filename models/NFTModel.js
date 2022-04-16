@@ -52,5 +52,4 @@ NFTSchema.pre(/^find/, function (next) {
 })
 
 const NFT = mongoose.models.NFT || mongoose.model("NFT", NFTSchema)
-
 export default NFT

@@ -7,6 +7,8 @@ import { useInView } from "react-intersection-observer"
 import { useSelector, useDispatch } from "react-redux"
 import { getSlides } from "store/actions/slideAction"
 
+import db from "utils/db"
+
 import Card from "components/Card"
 import NavBar from "components/NavBar"
 import Hero from "components/Hero"
@@ -16,6 +18,7 @@ import NFTShowcase from "components/NFTShowcase"
 const MAX_NUMBER_POKES = 898
 
 export default function Home({ slides }) {
+  console.log(mongoose.models)
   const [loading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch()
@@ -45,6 +48,7 @@ export default function Home({ slides }) {
 }
 
 export async function getServerSideProps() {
+  await db.connect()
   const result1 = await axios.get(`${process.env.NEXTAUTH_URL}/api/slides`)
   const slides = result1.data
 

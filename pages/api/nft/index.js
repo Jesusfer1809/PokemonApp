@@ -4,7 +4,6 @@ import { getAllNFT, createNFT } from "controllers/NFTControllers"
 
 export default async function handler(req, res) {
   await db.connect()
-
   switch (req.method) {
     case "GET":
       return await getAllNFT(req, res)
