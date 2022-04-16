@@ -10,7 +10,7 @@ function NFTShowcase() {
     try {
       const fetchNFT = async () => {
         try {
-          const result = await axios.get("http://localhost:3000/api/nft")
+          const result = await axios.get(`${process.env.NEXTAUTH_URL}/api/nft`)
           console.log(result)
           const pokemon1Gen = result.data.data.nft
 

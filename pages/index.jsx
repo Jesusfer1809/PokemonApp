@@ -45,7 +45,7 @@ export default function Home({ slides }) {
 }
 
 export async function getServerSideProps() {
-  const result1 = await axios.get("http://localhost:3000/api/slides")
+  const result1 = await axios.get(`${process.env.NEXTAUTH_URL}/api/slides`)
   const slides = result1.data
 
   // const result2 = await axios.get("http://localhost:3000/api/nft")
