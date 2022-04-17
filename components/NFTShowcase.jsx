@@ -2,20 +2,21 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import Card from "./Card"
 import mongoose from "mongoose"
+import { useSelector, useDispatch } from "react-redux"
 
 import db from "utils/db"
 
 function NFTShowcase() {
   const [nft, setNFT] = useState([])
+  const AXIOS_URL = useSelector((state) => state.url.url)
 
   useEffect(async () => {
     try {
       const fetchNFT = async () => {
         try {
-          const res = await fetch(`${process.env.NEXTAUTH_URL}/api/nft`)
-          const data = await res.json()
-          console.log(data)
-          const pokemon1Gen = data.data.nft
+          const res = await axios.get(`${AXIOS_URL}/api/nft`)
+
+          const pokemon1Gen = res.data.data.nft
 
           setNFT(pokemon1Gen)
         } catch (e) {

@@ -4,16 +4,18 @@ import { useEffect, useState } from "react"
 import { useSession, signIn } from "next-auth/react"
 import axios from "axios"
 
+import { useSelector, useDispatch } from "react-redux"
+
 function NavBar() {
   const { data: session } = useSession()
   const [user, setUser] = useState(null)
 
+  const AXIOS_URL = useSelector((state) => state.url.url)
+
   useEffect(async () => {
     try {
       const fetchNFT = async () => {
-        const result = await axios.get(
-          `${process.env.NEXTAUTH_URL}/api/user/me`
-        )
+        const result = await axios.get(`${AXIOS_URL}/api/user/me`)
         return result.data.data.me[0]
       }
 
@@ -23,7 +25,9 @@ function NavBar() {
       } else {
         setUser(null)
       }
-    } catch (e) {}
+    } catch (e) {
+      setUser(null)
+    }
   }, [session])
 
   return (

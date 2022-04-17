@@ -34,7 +34,7 @@ export default DetailPage
 export async function getServerSideProps(ctx) {
   const { id } = ctx.params
 
-  const result1 = await axios.get(`http://localhost:3000/api/nft/${id}`)
+  const result1 = await axios.get(`${process.env.AXIOS_URL}/api/nft/${id}`)
   const pokeData = result1.data.data.nft
 
   return {

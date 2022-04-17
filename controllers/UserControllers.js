@@ -28,6 +28,8 @@ export const getMe = async (req, res, session) => {
     const { email } = session.user
     const me = await UserInfo.find({ email })
 
+    await db.disconnect()
+
     return res.status(200).json({
       status: "success",
 
@@ -36,6 +38,7 @@ export const getMe = async (req, res, session) => {
       },
     })
   } catch (error) {
+    await db.disconnect()
     return res.status(400).json({
       status: "fail",
       message: error.message,

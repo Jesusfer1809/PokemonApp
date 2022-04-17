@@ -3,7 +3,8 @@ import db from "utils/db"
 
 export const getAllNFT = async (req, res) => {
   try {
-    const nft = await NFT.find()
+    const nft = await NFT.find({})
+    await db.disconnect()
 
     return res.status(200).json({
       status: "success",
@@ -14,6 +15,7 @@ export const getAllNFT = async (req, res) => {
       },
     })
   } catch (error) {
+    await db.disconnect()
     return res.status(400).json({
       status: "fail",
       message: error.message,
