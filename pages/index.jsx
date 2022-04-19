@@ -1,13 +1,12 @@
 import Head from "next/head"
 import axios from "axios"
-import mongoose from "mongoose"
 
 import UserInfo from "models/UserInfoModel"
 
 import { useEffect, useState } from "react"
-import { useSession, signIn } from "next-auth/react"
+
 import { useInView } from "react-intersection-observer"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { getSlides } from "store/actions/slideAction"
 import { getUrl } from "store/actions/urlAction"
 
@@ -54,7 +53,6 @@ export default function Home({ slides, AXIOS_URL }) {
 export async function getServerSideProps() {
   await db.connect()
   const uwu = await UserInfo.find({ email: "undefined" })
-  await db.disconnect()
 
   const result1 = await axios.get(`${process.env.AXIOS_URL}/api/slides`)
   const slides = result1.data
