@@ -3,7 +3,8 @@ import db from "utils/db"
 
 export const getAllNFT = async (req, res) => {
   try {
-    const nft = await NFT.find({})
+    await db.connect()
+    const nft = await NFT.find({ _id: "6255e10204ca900b9b590d93" })
     await db.disconnect()
 
     return res.status(200).json({
@@ -16,15 +17,20 @@ export const getAllNFT = async (req, res) => {
     })
   } catch (error) {
     await db.disconnect()
+    console.log({
+      message: "this is the error",
+      error,
+    })
     return res.status(400).json({
       status: "fail",
-      message: error.message,
+      message: error,
     })
   }
 }
 
 export const createNFT = async (req, res) => {
   try {
+    await db.connect()
     const newNFT = await NFT.create(req.body)
 
     await db.disconnect()

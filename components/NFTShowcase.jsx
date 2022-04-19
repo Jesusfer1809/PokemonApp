@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react"
 import Card from "./Card"
 import mongoose from "mongoose"
 import { useSelector, useDispatch } from "react-redux"
+import { useSession, signIn } from "next-auth/react"
 
 import db from "utils/db"
 
 function NFTShowcase() {
   const [nft, setNFT] = useState([])
+  const { data: session } = useSession()
   const AXIOS_URL = useSelector((state) => state.url.url)
 
   useEffect(async () => {
@@ -26,7 +28,9 @@ function NFTShowcase() {
 
       fetchNFT()
     } catch (e) {
-      console.log(e)
+      console.log({
+        message: e,
+      })
     }
   }, [])
 

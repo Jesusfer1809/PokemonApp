@@ -9,13 +9,13 @@ async function connect() {
     console.log("already connected")
     return
   }
-  if (mongoose.connections.length > 0) {
-    connection.isConnected = mongoose.connections[0].readyState
-    if (connection.isConnected === 1) {
-      console.log("use previous connection")
-    }
-    await mongoose.disconnect()
-  }
+  // if (mongoose.connections.length > 0) {
+  //   connection.isConnected = mongoose.connections[0].readyState
+  //   if (connection.isConnected === 1) {
+  //     console.log("use previous connection")
+  //   }
+  //   await mongoose.disconnect()
+  // }
 
   /* connecting to our database */
   const db = await mongoose.connect(process.env.MONGODB_URI, {
