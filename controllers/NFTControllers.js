@@ -4,7 +4,7 @@ import db from "utils/db"
 export const getAllNFT = async (req, res) => {
   try {
     await db.connect()
-    const nft = await NFT.find({ _id: "6255e10204ca900b9b590d93" })
+    const nft = await NFT.find({}).sort({ NFTProps: 1 })
     await db.disconnect()
 
     return res.status(200).json({

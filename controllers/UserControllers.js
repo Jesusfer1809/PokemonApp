@@ -25,6 +25,7 @@ export const createNewUser = async (req, res) => {
 
 export const getMe = async (req, res, session) => {
   try {
+    await db.connect()
     const { email } = session.user
     const me = await UserInfo.find({ email })
 
